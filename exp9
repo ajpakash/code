@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>AJP Exp-9</title>
+</head>
+<body>
+<form action="index.jsp">
+<label>Enter the number: </label>
+<input type="text" name ="un">
+<input type="submit" value="Submit">
+<br>
+</form>
+</body>
+</html> 
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<h1>Welcome to JSP</h1>
+<br>
+<%
+String n = request.getParameter("un"); 
+int no = Integer.parseInt(n); 
+out.println("number Entered is : " +no); 
+out.println("<br> <br>"); 
+out.println("Cube of Number :" + no*no*no); 
+%>
+</body>
+</html> 
