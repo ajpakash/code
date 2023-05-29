@@ -1,0 +1,81 @@
+//PalindromeInterface
+import java.rmi.Remote;
+import java.rmi.RemoteExcepƟon;
+public interface PalindromeInterface extends Remote{
+public boolean Palindrome(String str) throws RemoteExcepƟon;
+}
+//PalindromeImplement
+import java.rmi.RemoteExcepƟon;
+import java.rmi.server.UnicastRemoteObject;
+public class PalindromeImplement extends UnicastRemoteObject implements 
+PalindromeInterface {
+protected PalindromeImplement() throws RemoteExcepƟon {
+ super();
+ // TODO Auto-generated constructor stub
+}
+public boolean Palindrome (String str) {
+ String revString="";
+ for(int i=str.length()-1;i>=0;i--) {
+ revString +=str.charAt(i);
+ }
+ if(str.compareTo(revString)==0) {
+ return true;
+ }
+ else {
+ return false;
+ }
+}
+}
+//Server Class
+import java.net.MalformedURLExcepƟon;
+import java.rmi.Naming;
+import java.rmi.RemoteExcepƟon;
+public class ServerClass {
+public staƟc void main(String args[]) {
+ 
+ try {
+ PalindromeImplement pi = new PalindromeImplement();
+ try {
+ Naming.rebind("rmi://localhost/abc",pi);
+ } catch (MalformedURLExcepƟon e) {
+ // TODO Auto-generated catch block
+e.printStackTrace();
+ }
+ System.out.println("Server Ready");
+ } catch (RemoteExcepƟon e) {
+ // TODO Auto-generated catch block
+ e.printStackTrace();
+ }
+ 
+ 
+ 
+ 
+}
+}
+//Client Class
+import java.net.MalformedURLExcepƟon;
+import java.rmi.Naming;
+import java.rmi.NotBoundExcepƟon;
+import java.rmi.RemoteExcepƟon;
+public class ClientClass {
+public staƟc void main(String arg[]) {
+ PalindromeInterface pi;
+ boolean b = false;
+ try {
+ pi= (PalindromeInterface) 
+Naming.lookup("rmi://localhost/abc");
+ b = pi.Palindrome("lvel");
+ if(b) {
+ System.out.println("String is Palindrome");
+ }
+ else {
+ System.out.println("Not Palindrome");
+ }
+ } catch (ExcepƟon e) {
+ // TODO Auto-generated catch block
+ e.printStackTrace();
+ } 
+ 
+ 
+}
+}
