@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>login</title>
+</head>
+<body>
+<form action="login"method="post">
+<h1>login</h1>
+<label>Username</label>
+<input type="text" name="username">
+<br><br>
+<label>Password</label>
+<input type="Password" name="password">
+<br><br>
+<input type="submit" value="Submit"><br/>
+</form>
+</body>
+</html>
+import java.io.IOException; 
+import java.sql.ResultSet; 
+import java.sql.SQLException; 
+import javax.servlet.ServletException; 
+import javax.servlet.annotation.WebServlet; 
+import javax.servlet.http.HttpServlet; 
+import javax.servlet.http.HttpServletRequest; 
+import javax.servlet.http.HttpServletResponse; 
+import com.mysql.cj.protocol.Resultset; 
+/**
+* Servlet implementation class login
+*/
+@WebServlet("/login") 
+public class login extends HttpServlet { 
+private static final long serialVersionUID = 1L; 
+/**
+* @see HttpServlet#HttpServlet()
+*/
+public login() { 
+super(); 
+// TODO Auto-generated constructor stub
+} 
+protected void doPost(HttpServletRequest request, HttpServletResponse response) 
+throws ServletException, IOException { 
+// TODO Auto-generated method stub
+//doGet(request, response);
+String username = request.getParameter("username"); 
+String password = request.getParameter("password"); 
+response.getWriter().println("Username ="+ username); 
+response.getWriter().println(" "); 
+response.getWriter().println("Password ="+ password); 
+response.getWriter().println(""); 
+UserDao ud =new UserDao(); 
+ResultSet rs = ud.readUser(username); 
+try { 
+while (rs.next()) { 
+response.getWriter().println("Databse Username ="+ rs.getString(1)); 
+response.getWriter().println(" "); 
+response.getWriter().println("Database Password ="+ rs.getString(2)); 
+} 
+} catch (IOException | SQLException e) { 
+// TODO Auto-generated catch block
+e.printStackTrace(); 
+} 
+} 
+} 
+import java.sql.Connection; 
+import java.sql.DriverManager; 
+import java.sql.PreparedStatement; 
+import java.sql.ResultSet; 
+import java.sql.SQLException; 
+import com.mysql.cj.protocol.Resultset; 
+public class UserDao { 
+public ResultSet readUser(String username) { 
+// TODO Auto-generated method stub
+String driver ="com.mysql.jdbc.Driver"; 
+String url="jdbc:mysql://localhost:3306/jdbcdb"; 
+String user ="root"; 
+String pass = "hrithik"; 
+ResultSet rs =null; 
+String query ="SELECT *FROM Exp where username=?"; 
+try { 
+Class.forName(driver); 
+Connection con = DriverManager.getConnection(url,user,pass); 
+PreparedStatement pstmt=con.prepareStatement(query); 
+pstmt.setString(1, username); 
+rs = pstmt.executeQuery(); 
+} 
+catch(SQLException | ClassNotFoundException e) { 
+e.printStackTrace(); 
+} 
+return rs; 
+} 
+}
